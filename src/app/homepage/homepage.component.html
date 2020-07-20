@@ -1,0 +1,219 @@
+  
+<div class="container-fluid">
+<div class="row">
+    <div class="col m-5">
+        <h5 class="text-danger text-center">My Web Application</h5>
+
+        <p class="text-right">
+            <button type="button" class="btn brx-20 btn-sm btn-primary "
+            (click)="InsertModal(addData)"
+            >
+                Insert Data             
+            </button>
+        </p>
+<div class="border">
+        <table class="table">
+            <thead>
+              <tr>
+                <th *ngFor="let item of columnDefs" class="text-center" >{{item.headerName}}</th>
+                <th width="16%">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let item of rowData ; let i=index">
+                  <ng-container *ngIf="!item.editable">
+                <td class="text-left" width="14%">{{item.FavouriteSport}}</td>
+                <td class="text-center" width="14%">{{item.Gender}}</td>
+                <td class="text-center" width="14%">{{item.StartDate}}</td>
+                <td class="text-center" width="14%">{{item.enddate}}</td>
+                <td class="text-center" width="14%">{{item.Deposite}}</td>
+                <td class="text-center" width="14%">{{item.Remaining}}</td>
+                <td class="text-center" width="16%">
+                    <button type="button" class="btn brx-20 btn-sm btn-primary mr-3"
+                    (click)="editable(item)"
+                    >
+                        Edit
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="openModal(template, i)">
+                        Remove
+                      </button>
+                </td>
+            </ng-container>
+            <ng-container *ngIf="item.editable">
+                <td class="text-left" width="14">                   
+                     <input [(ngModel)]="item.FavouriteSport" name="sport" style="width: 105px;">
+                    </td>
+                <td class="text-center" width="14">
+                    <select id="select-type-basic" [(ngModel)]="item.Gender">
+                        <option *ngFor="let status_item of dataD">
+                        {{status_item.Gender}}
+                        </option>
+                    </select>
+                    <!-- <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option [(ngModel)]="item.Gender" name="gender" ngDefaultControl  value="d.Gender" *ngFor="let d of dataD" >{{d.Gender}}</option>
+                       <option value="2">Two</option>
+                        <option value="3">Three</option> 
+                      </select> 
+                    <input [(ngModel)]="item.Gender" name="gender" style="width: 105px;"> -->
+                </td>
+                <!-- <td class="text-center" width="14"> -->
+                    <td class="text-center" width="14">
+                        <input type="text"
+                        [(ngModel)]="item.StartDate"
+                        name="item.StartDate"
+                        placeholder="Datepicker"
+                        class="form-control"
+                        bsDatepicker>
+                </td>
+                <!-- <td class="text-center" width="14"> -->
+                    <td class="text-center" width="14">
+                        <input type="text"
+                        [(ngModel)]="item.enddate"
+                        name="item.enddate"
+                        placeholder="Datepicker"
+                        class="form-control"
+                        bsDatepicker>
+                    </td>
+                <td class="text-center" width="14">{{item.Deposite}}</td>
+                <td class="text-center" width="14">{{item.Remaining}}</td>
+                <td class="text-center" width="16">
+                    <button type="button" class="btn brx-20 btn-sm btn-secondary mr-3" style="width: 67px;"
+                    (click)="cancel(item)"
+                    >
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="openModal(template, i)">
+                        Remove
+                      </button>
+                </td>
+            </ng-container>
+              </tr>
+            </tbody>
+         
+
+          </table>
+          <div class="text-right">
+            <pagination [totalItems]="10"></pagination>
+        </div>
+        </div>
+        <!-- <ag-grid-angular 
+        style="width: 100%; height: 400px;" 
+        class="ag-theme-balham" 
+        [rowData]="rowData"
+        [columnDefs]="columnDefs"
+        >
+        </ag-grid-angular> -->
+    </div>
+</div>
+</div>
+
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Delete</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+       <p class="mb-5"> Are you sure want to remove Item?</p>
+
+       <div class="text-center">
+       <button type="button" class="btn brx-20 btn-sm btn-primary mr-3" style="width: 67px;"
+       (click)="deleteItems()"
+       >
+           Confirm
+         </button>
+         <button type="button" class="btn btn-sm btn-secondary" (click)="modalRef.hide()">
+           Discard
+         </button>
+        </div>
+    </div>
+  </ng-template>
+
+  
+<ng-template #addData>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Insert New Data</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead>
+              <tr>
+                <th *ngFor="let item of columnDefs" class="text-center" >{{item.headerName}}</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td class="text-left" width="14%">           
+                     <input [(ngModel)]="favouritSport" name="sport" style="width: 85px;">
+                     <div class="text-danger" *ngIf="submitted && !favouritSport">
+                    <p>*Required field</p>
+                     </div>
+                </td>
+                <td class="text-center" width="14%">  
+                    <select id="select-type-basic" [(ngModel)]="Gender">
+                        <option *ngFor="let status_item of dataD">
+                        {{status_item.Gender}}
+                        </option>
+                    </select>   
+                                    
+</td>
+                <td class="text-center" width="14%">   
+                    <input type="text"
+                    [(ngModel)]="startDate"
+                    name="startDate"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker>
+</td>
+                <td class="text-center" width="14%">                     
+                    <input type="text"
+                    [(ngModel)]="endDate"
+                    name="endDate"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker>
+
+</td>
+                <td class="text-center" width="14%">                     
+                    <input [(ngModel)]="deposit" name="diposit" style="width: 85px;">
+                    <div class="text-danger" *ngIf="submitted && !deposit">
+                        <p>*Required field</p>
+                         </div>
+</td>
+                <td class="text-center" width="14%">                     
+                    <input [(ngModel)]="remaining" name="remaining" style="width: 85px;">
+                    <div class="text-danger" *ngIf="submitted && !remaining">
+                        <p>*Required field</p>
+                         </div>
+</td>
+            
+    
+          
+              </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button type="button" class="btn btn-sm btn-primary" style="width: 100px;"
+            (click)="addDataInsert()"
+            >
+                Save
+              </button>
+        </div>
+    </div>
+</div>
+
+
+
+    </div>
+  </ng-template>
