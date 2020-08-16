@@ -23,19 +23,18 @@
 
               <tr *ngFor="let item of rowData ; let i=index">
                   <ng-container *ngIf="!item.editable">
-                <td class="text-left" width="14%">{{item.FavouriteSport}}</td>
-                <td class="text-center" width="14%">{{item.Gender}}</td>
-                <td class="text-center" width="14%">{{item.StartDate}}</td>
-                <td class="text-center" width="14%">{{item.enddate}}</td>
-                <td class="text-center" width="14%">{{item.Deposite}}</td>
-                <td class="text-center" width="14%">{{item.Remaining}}</td>
+                <td class="text-center" width="14%">{{item.EmpId}}</td>
+                <td class="text-center" width="14%">{{item.Name}}</td>
+                <td class="text-center" width="14%">{{item.EmpCode}}</td>
+                <td class="text-center" width="14%">{{item.Salary}}</td>
+               
                 <td class="text-center" width="16%">
                     <button type="button" class="btn brx-20 btn-sm btn-primary mr-3"
                     (click)="editable(item)"
                     >
                         Edit
                       </button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="openModal(template, i)">
+                      <button type="button" class="btn btn-sm btn-danger" (click)="openModal(template, item.EmpId)">
                         Remove
                       </button>
                 </td>
@@ -76,8 +75,7 @@
                         class="form-control"
                         bsDatepicker>
                     </td>
-                <td class="text-center" width="14">{{item.Deposite}}</td>
-                <td class="text-center" width="14">{{item.Remaining}}</td>
+              
                 <td class="text-center" width="16">
                     <button type="button" class="btn brx-20 btn-sm btn-secondary mr-3" style="width: 67px;"
                     (click)="cancel(item)"

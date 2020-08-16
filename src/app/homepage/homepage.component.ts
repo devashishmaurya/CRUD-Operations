@@ -1,6 +1,7 @@
  import { Component, OnInit, TemplateRef  } from '@angular/core';
-import { rowData, columnDefs } from './dummy';
+import { columnDefs } from './dummy';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -27,13 +28,41 @@ export class HomepageComponent implements OnInit {
   }]
   indexData: number;
   submitted=false;
+  // public _url: string = "http://192.168.0.6:3100/employees";
 
-  constructor(private modalService: BsModalService) { }
+
+  constructor(private modalService: BsModalService,
+    private http: HttpClient
+    ) { }
 
   ngOnInit(): void {
+    // debugger;
     this.columnDefs = columnDefs;
+    this.getData();
 
-    this.rowData = rowData.filter(item=>
+    // this.http.get('http://192.168.0.6:3100/employees').subscribe(data => {
+    //   this.rowData = data;
+    //   console.log(this.rowData);
+    // });
+
+    // this.rowData = this.rowData?.filter(item=>
+    //   item.id===null? false:true
+    // );
+    // console.log(this.dataD);
+
+
+
+  }
+  getData(): void {
+    // debugger;
+    // this.columnDefs = columnDefs;
+
+    this.http.get('http://192.168.0.6:3100/employees').subscribe(data => {
+      this.rowData = data;
+      console.log(this.rowData);
+    });
+
+    this.rowData = this.rowData?.filter(item=>
       item.id===null? false:true
     );
     console.log(this.dataD);
@@ -56,7 +85,11 @@ export class HomepageComponent implements OnInit {
   }
 
   deleteItems(){
-    this.rowData.splice(this.indexData, 1);
+    this.http.delete('http://192.168.0.6:3100/employees/'+ this.indexData).subscribe(data => {
+      this.getData();
+
+    // this.rowData.splice(this.indexData, 1);
+  });
     this.modalRef.hide();
   }
   InsertModal(addData: TemplateRef<any>) {
